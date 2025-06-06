@@ -1,32 +1,19 @@
 {% extends 'base.html' %}
 {% block titre %}Liste des films{% endblock %}
 {% block content %}
-<h2>Films disponibles</h2>
-<a href="{% url 'ajout_film' %}" class="btn">Ajouter un film</a>
-<div class="film-grid">
-    {% for film in films %}
-        <a href="{% url 'detail_film' film.pk %}" class="film-card">
-            {% if film.affiche %}
-                <img src="{{ film.affiche.url }}" alt="{{ film.titre }}" class="film-poster">
-            {% else %}
-                <div class="film-poster" style="display: flex; align-items: center; justify-content: center; background: #ccc;">Aucune affiche</div>
-            {% endif %}
-            <div class="film-info">
-                <h3 class="film-title">{{ film.titre }}</h3>
-                <p><strong>Année :</strong> {{ film.annee_sortie }}</p>
-                <p><strong>Réalisateur :</strong> {{ film.realisateur }}</p>
-                <p>Acteurs :
-                    {% for acteur in film.acteurs.all %}
-                        {{ acteur.prenom }} {{ acteur.nom }}{% if not forloop.last %}, {% endif %}
-                    {% empty %}
-                        Aucun acteur
-                    {% endfor %}
-                </p>
-                {% if film.categorie %}
-                    <p><strong>Catégorie :</strong> {{ film.categorie.nom }}</p>
-                {% endif %}
-            </div>
-        </a>
-    {% endfor %}
+<h2>Films enregistrés</h2>
+<a href="{% url 'ajout_film' %}" class="btn">➕ Ajouter un film</a>
+{% for film in films %}
+<div class="film-card">
+    <img src="{{ film.affiche.url }}" alt="Affiche de {{ film.titre }}">
+    <div class="film-info">
+        <h3><a href="{% url 'detail_film' film.pk %}">{{ film.titre }}</a></h3>
+        <p>Réalisateur : {{ film.realisateur }}</p>
+        <p>Année de sortie : {{ film.annee_sortie }}</p>
+        <p>Catégorie : {{ film.categorie.nom }}</p>
+    </div>
 </div>
+{% empty %}
+<p>Aucun film enregistré.</p>
+{% endfor %}
 {% endblock %}

@@ -2,12 +2,20 @@
 {% block titre %}Liste des acteurs{% endblock %}
 {% block content %}
 <h2>Acteurs enregistrés</h2>
-<a href="{% url 'ajout_acteur' %}" class="btn">Ajouter un acteur</a>
-<ul>
+<a href="{% url 'ajout_acteur' %}" class="btn">➕ Ajouter un acteur</a>
+<div class="acteur-grid">
     {% for acteur in acteurs %}
-        <li><a href="{% url 'detail_acteur' acteur.pk %}">{{ acteur.prenom }} {{ acteur.nom }}</a> — {{ acteur.age }} ans</li>
+    <div class="acteur-card">
+        {% if acteur.photo %}
+            <img src="{{ acteur.photo.url }}" alt="Photo de {{ acteur.prenom }} {{ acteur.nom }}" class="acteur-photo">
+        {% else %}
+            <div class="placeholder">Pas de photo</div>
+        {% endif %}
+        <a href="{% url 'detail_acteur' acteur.pk %}" class="acteur-nom">{{ acteur.prenom }} {{ acteur.nom }}</a>
+        <div class="acteur-age">{{ acteur.age }} ans</div>
+    </div>
     {% empty %}
-        <li>Aucun acteur enregistré.</li>
+    <p>Aucun acteur enregistré.</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

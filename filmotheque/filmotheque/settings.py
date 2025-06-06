@@ -63,6 +63,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'films.Personne'
 
 # === Mots de passe ===
 AUTH_PASSWORD_VALIDATORS = [
@@ -88,8 +89,10 @@ USE_TZ = True
 
 # === Fichiers statiques ===
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
 # === Fichiers média (images uploadées) ===
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

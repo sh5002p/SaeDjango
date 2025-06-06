@@ -1,7 +1,11 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Film, Acteur, Categorie, Commentaire
-from .forms import FilmForm, ActeurForm, CategorieForm, CommentaireForm
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404
+
+from .models import Film, Acteur, Categorie, Commentaire, Personne, Usager
+from .forms import FilmForm, ActeurForm, CategorieForm, CommentaireForm, PersonneForm, UsagerForm
+
+
 # === Films ===
 class ListeFilms(ListView):
     model = Film
@@ -69,10 +73,29 @@ class AjoutCommentaire(CreateView):
     form_class = CommentaireForm
     template_name = "films/formulaire_commentaire.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.film = get_object_or_404(Film, pk=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        film_id = self.kwargs['film_id']
-        form.instance.film_id = film_id
+        form.instance.film = self.film
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('detail_film', kwargs={'pk': self.kwargs['film_id']})
+        return reverse("detail_film", args=[self.film.pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['film'] = self.film
+        return context
+
+class AjoutPersonne(CreateView):
+    model = Personne
+    form_class = PersonneForm
+    template_name = 'films/formulaire_personne.html'
+    success_url = reverse_lazy('liste_films')
+class AjoutUsager(CreateView):
+    model = Usager
+    form_class = UsagerForm
+    template_name = "films/formulaire_usager.html"
+    success_url = reverse_lazy("liste_films")  # Redirection après enregistrement

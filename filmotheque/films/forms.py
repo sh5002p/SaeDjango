@@ -1,5 +1,9 @@
 from django import forms
 from .models import Film, Acteur, Categorie, Commentaire
+from django.contrib.auth.forms import UserCreationForm
+from .models import Personne
+from .models import Film, Acteur, Categorie, Commentaire, Usager
+
 
 class FilmForm(forms.ModelForm):
     annee_sortie = forms.DateField(
@@ -32,4 +36,20 @@ class CategorieForm(forms.ModelForm):
 class CommentaireForm(forms.ModelForm):
     class Meta:
         model = Commentaire
-        exclude = ['film']
+        fields = ['personne', 'note', 'texte']
+        widgets = {
+            'note': forms.NumberInput(attrs={'min': 0, 'max': 20}),
+        }
+
+
+class PersonneForm(UserCreationForm):
+    class Meta:
+        model = Personne
+        fields = ['pseudo', 'nom', 'prenom', 'mail', 'type', 'password1', 'password2']
+
+class UsagerForm(forms.ModelForm):
+    mot_de_passe = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = Usager
+        fields = '__all__'

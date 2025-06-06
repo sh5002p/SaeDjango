@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% block titre %}Liste des catégories{% endblock %}
 {% block content %}
-<h2>Catégories de films</h2>
-<a href="{% url 'ajout_categorie' %}" class="btn">Ajouter une catégorie</a>
-<ul>
+<h2>Catégories enregistrées</h2>
+<a href="{% url 'ajout_categorie' %}" class="btn">➕ Ajouter une catégorie</a>
+<div class="categorie-grid">
     {% for categorie in categories %}
-        <li><a href="{% url 'detail_categorie' categorie.pk %}">{{ categorie.nom }}</a></li>
+    <div class="categorie-card">
+        <a href="{% url 'detail_categorie' categorie.pk %}" class="categorie-nom">{{ categorie.nom }}</a>
+        <div class="categorie-description">{{ categorie.description }}</div>
+    </div>
     {% empty %}
-        <li>Aucune catégorie disponible.</li>
+    <p>Aucune catégorie enregistrée.</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titre %}{{ film.titre }}{% endblock %}
 
@@ -10,33 +11,68 @@
 {% endif %}
 
 <p><strong>Réalisateur :</strong> {{ film.realisateur }}</p>
-
 <p><strong>Date de sortie :</strong> {{ film.annee_sortie }}</p>
+
 <p><strong>Catégorie :</strong>
     {% if film.categorie %}
-        <a href="{% url 'detail_categorie' film.categorie.pk %}">{{ film.categorie.nom }}</a>
+        <span class="badge-categorie">{{ film.categorie.nom }}</span>
     {% else %}
-        Non spécifiée
+        <span class="badge-categorie badge-vide">Non spécifiée</span>
     {% endif %}
 </p>
 
 <p><strong>Synopsis :</strong><br>{{ film.synopsis }}</p>
 
 <h3>Acteurs :</h3>
-<ul>
+<div class="acteurs-film">
     {% for acteur in film.acteurs.all %}
-        <li>
+        <div class="acteur-card">
             <a href="{% url 'detail_acteur' acteur.pk %}">
+                {% if acteur.photo %}
+                    <img src="{{ acteur.photo.url }}" alt="Photo de {{ acteur.prenom }} {{ acteur.nom }}" class="acteur-image">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" alt="Acteur sans photo" class="acteur-image">
+                {% endif %}
+            </a>
+            <a href="{% url 'detail_acteur' acteur.pk %}" class="acteur-nom">
                 {{ acteur.prenom }} {{ acteur.nom }}
             </a>
-        </li>
+        </div>
     {% empty %}
-        <li>Aucun acteur associé</li>
+        <p>Aucun acteur associé.</p>
     {% endfor %}
-</ul>
+</div>
 
 {% if film.moyenne_notes %}
-    <p><strong>Note moyenne :</strong> {{ film.moyenne_notes }}/5</p>
+    <p><strong>Note moyenne :</strong>
+        <span class="note-moyenne">{{ film.moyenne_notes }}/20</span>
+    </p>
+{% endif %}
+
+<h3>Commentaires :</h3>
+
+{% if film.commentaires.exists %}
+    {% with film.meilleur_commentaire as meilleur %}
+    {% with film.pire_commentaire as pire %}
+        <div class="grille-commentaires">
+            {% for commentaire in film.commentaires.all|dictsortreversed:"note" %}
+                <div class="commentaire-card
+                    {% if commentaire.id == meilleur.id %} meilleur-commentaire {% endif %}
+                    {% if commentaire.id == pire.id %} pire-commentaire {% endif %}
+                ">
+                    <div class="note">{{ commentaire.note }}/20</div>
+                    <p>{{ commentaire.texte }}</p>
+                    <small>
+                        par <span class="auteur-commentaire">{{ commentaire.personne.pseudo }}</span>
+                        — {{ commentaire.date_creation|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+            {% endfor %}
+        </div>
+    {% endwith %}
+    {% endwith %}
+{% else %}
+    <p>Aucun commentaire pour ce film.</p>
 {% endif %}
 
 <a href="{% url 'ajout_commentaire' film.pk %}" class="btn">Ajouter un commentaire</a>
