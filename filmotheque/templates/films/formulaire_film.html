@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block titre %}{{ form.instance.pk|yesno:"Modifier un film,Ajouter un film" }}{% endblock %}
+{% block content %}
+<h2>{{ form.instance.pk|yesno:"Modifier le film,Ajouter un nouveau film" }}</h2>
+<div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">{{ form.instance.pk|yesno:"Mettre à jour,Créer le film" }}</button>
+    </form>
+</div>
+{% endblock %}

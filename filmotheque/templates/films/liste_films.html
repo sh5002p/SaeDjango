@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block titre %}Liste des films{% endblock %}
+{% block content %}
+<h2>Films disponibles</h2>
+<a href="{% url 'ajout_film' %}" class="btn">Ajouter un film</a>
+<div class="film-grid">
+    {% for film in films %}
+        <a href="{% url 'detail_film' film.pk %}" class="film-card">
+            {% if film.affiche %}
+                <img src="{{ film.affiche.url }}" alt="{{ film.titre }}" class="film-poster">
+            {% else %}
+                <div class="film-poster" style="display: flex; align-items: center; justify-content: center; background: #ccc;">Aucune affiche</div>
+            {% endif %}
+            <div class="film-info">
+                <h3 class="film-title">{{ film.titre }}</h3>
+                <p><strong>Année :</strong> {{ film.annee_sortie }}</p>
+                <p><strong>Réalisateur :</strong> {{ film.realisateur }}</p>
+                {% if film.categorie %}
+                    <p><strong>Catégorie :</strong> {{ film.categorie.nom }}</p>
+                {% endif %}
+            </div>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

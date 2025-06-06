@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Filmothèque{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'liste_films' %}">Filmothèque</a></h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'liste_films' %}">Films</a></li>
+                <li><a href="{% url 'liste_acteurs' %}">Acteurs</a></li>
+                <li><a href="{% url 'liste_categories' %}">Catégories</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Le contenu spécifique à chaque page sera ici -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - Filmothèque</p>
+    </footer>
+</body>
+</html>

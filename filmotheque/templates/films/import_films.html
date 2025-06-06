@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block titre %}Importer des films{% endblock %}
+{% block content %}
+<h2>Importer des films via un fichier CSV ou JSON</h2>
+<div class="form-container">
+    {% if message %}
+        <p style="color: green;">{{ message }}</p>
+    {% endif %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Importer</button>
+    </form>
+    <p><strong>Champs requis :</strong> <code>title, release_year, director, category, actors</code></p>
+</div>
+{% endblock %}

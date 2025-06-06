@@ -1,39 +1,55 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from .models import Film, Acteur, Categorie, Commentaire, User, FilmActeur
-from .formulaires import (FormulaireFilm, FormulaireActeur, FormulaireCategorie,
-                          FormulaireCommentaire, FormulaireUtilisateur, FormulaireImportFilm)
-import csv
-import json
-from io import TextIOWrapper
+from .models import Film, Acteur, Categorie
+from .forms import FilmForm, ActeurForm, CategorieForm
 
-
-class VueListeFilms(ListView):
+# === Films ===
+class ListeFilms(ListView):
     model = Film
-    template_name = 'films/liste_films.html'
-    context_object_name = 'films'
+    template_name = "films/liste_films.html"
+    context_object_name = "films"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Categorie.objects.all()
-        return context
-
-
-class VueDetailFilm(DetailView):
+class DetailFilm(DetailView):
     model = Film
-    template_name = 'films/detail_film.html'
+    template_name = "films/detail_film.html"
+    context_object_name = "film"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        film = self.object
-        context['formulaire_commentaire'] = FormulaireCommentaire()
-        context['commentaires'] = film.commentaires.all()
-        context['moyenne_pro'] = film.moyenne_notes(User.PROFESSIONNEL)
-        context['moyenne_amateur'] = film.moyenne_notes(User.AMATEUR)
-        context['meilleur_commentaire'] = film.meilleur_commentaire()
-        context['pire_commentaire'] = film.pire_commentaire()
-        return context
+class AjoutFilm(CreateView):
+    model = Film
+    form_class = FilmForm
+    template_name = "films/formulaire_film.html"
+    success_url = reverse_lazy("liste_films")
 
+# === Acteurs ===
+class ListeActeurs(ListView):
+    model = Acteur
+    template_name = "films/liste_acteurs.html"
+    context_object_name = "acteurs"
+
+class DetailActeur(DetailView):
+    model = Acteur
+    template_name = "films/detail_acteur.html"
+    context_object_name = "acteur"
+
+class AjoutActeur(CreateView):
+    model = Acteur
+    form_class = ActeurForm
+    template_name = "films/formulaire_acteur.html"
+    success_url = reverse_lazy("liste_acteurs")
+
+# === Catégories ===
+class ListeCategories(ListView):
+    model = Categorie
+    template_name = "films/liste_categories.html"
+    context_object_name = "categories"
+
+class DetailCategorie(DetailView):
+    model = Categorie
+    template_name = "films/detail_categorie.html"
+    context_object_name = "categorie"
+
+class AjoutCategorie(CreateView):
+    model = Categorie
+    form_class = CategorieForm
+    template_name = "films/formulaire_categorie.html"
+    success_url = reverse_lazy("liste_categories")

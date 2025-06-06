@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block titre %}Liste des acteurs{% endblock %}
+{% block content %}
+<h2>Acteurs enregistrés</h2>
+<a href="{% url 'ajout_acteur' %}" class="btn">Ajouter un acteur</a>
+<ul>
+    {% for acteur in acteurs %}
+        <li><a href="{% url 'detail_acteur' acteur.pk %}">{{ acteur.prenom }} {{ acteur.nom }}</a> — {{ acteur.age }} ans</li>
+    {% empty %}
+        <li>Aucun acteur enregistré.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

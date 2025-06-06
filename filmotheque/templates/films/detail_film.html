@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block titre %}{{ film.titre }}{% endblock %}
+{% block content %}
+<h2>{{ film.titre }} ({{ film.annee_sortie }})</h2>
+<p><strong>Réalisateur :</strong> {{ film.realisateur }}</p>
+<p><strong>Catégorie :</strong> {{ film.categorie }}</p>
+
+{% if film.affiche %}
+    <img src="{{ film.affiche.url }}" alt="{{ film.titre }}" class="film-poster">
+{% endif %}
+
+<h3>Acteurs</h3>
+<ul>
+    {% for acteur in film.acteurs.all %}
+        <li>{{ acteur }}</li>
+    {% empty %}
+        <li>Aucun acteur enregistré</li>
+    {% endfor %}
+</ul>
+
+<h3>Commentaires</h3>
+<div class="comment-section">
+    {% for commentaire in commentaires %}
+        <div class="comment">
+            <div class="comment-header">
+                <span class="comment-author">{{ commentaire.utilisateur }}</span>
+                <span class="comment-date">{{ commentaire.date_creation|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="rating">Note : {{ commentaire.note }}/5</div>
+            <p>{{ commentaire.texte }}</p>
+        </div>
+    {% empty %}
+        <p>Aucun commentaire pour ce film.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block titre %}{{ categorie.nom }}{% endblock %}
+{% block content %}
+<h2>Catégorie : {{ categorie.nom }}</h2>
+<p><strong>Description :</strong></p>
+<p>{{ categorie.description|linebreaks }}</p>
+<hr>
+<h3>Films associés</h3>
+<ul>
+    {% for film in categorie.film_set.all %}
+        <li><a href="{% url 'detail_film' film.id %}">{{ film.titre }}</a> ({{ film.annee_sortie }})</li>
+    {% empty %}
+        <li>Aucun film dans cette catégorie.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block titre %}{{ form.instance.pk|yesno:"Modifier une catégorie,Ajouter une catégorie" }}{% endblock %}
+{% block content %}
+<h2>{{ form.instance.pk|yesno:"Modifier la catégorie,Ajouter une nouvelle catégorie" }}</h2>
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">{{ form.instance.pk|yesno:"Mettre à jour,Créer" }}</button>
+    </form>
+</div>
+{% endblock %}

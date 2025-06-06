@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block titre %}{{ acteur.prenom }} {{ acteur.nom }}{% endblock %}
+{% block content %}
+<h2>{{ acteur.prenom }} {{ acteur.nom }}</h2>
+<div style="display: flex; gap: 2rem;">
+    {% if acteur.photo %}
+        <img src="{{ acteur.photo.url }}" alt="{{ acteur }}" style="width: 250px; border-radius: 12px;">
+    {% else %}
+        <div style="width: 250px; height: 350px; background: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 12px;">
+            <span>Aucune photo</span>
+        </div>
+    {% endif %}
+    <div>
+        <p><strong>Nom :</strong> {{ acteur.nom }}</p>
+        <p><strong>Prénom :</strong> {{ acteur.prenom }}</p>
+        <p><strong>Âge :</strong> {{ acteur.age }} ans</p>
+        <h3>Films</h3>
+        <ul>
+            {% for film in acteur.film_set.all %}
+                <li><a href="{% url 'detail_film' film.id %}">{{ film.titre }}</a> ({{ film.annee_sortie }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
