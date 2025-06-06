@@ -15,6 +15,13 @@
                 <h3 class="film-title">{{ film.titre }}</h3>
                 <p><strong>Année :</strong> {{ film.annee_sortie }}</p>
                 <p><strong>Réalisateur :</strong> {{ film.realisateur }}</p>
+                <p>Acteurs :
+                    {% for acteur in film.acteurs.all %}
+                        {{ acteur.prenom }} {{ acteur.nom }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Aucun acteur
+                    {% endfor %}
+                </p>
                 {% if film.categorie %}
                     <p><strong>Catégorie :</strong> {{ film.categorie.nom }}</p>
                 {% endif %}

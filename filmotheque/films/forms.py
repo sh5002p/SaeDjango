@@ -2,9 +2,22 @@ from django import forms
 from .models import Film, Acteur, Categorie, Commentaire
 
 class FilmForm(forms.ModelForm):
+    annee_sortie = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label="Date de sortie"
+    )
+    realisateur = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Nom du réalisateur'}),
+        label="Réalisateur",
+        required=False
+    )
+
     class Meta:
         model = Film
         fields = '__all__'
+        widgets = {
+            'acteurs': forms.SelectMultiple(attrs={'size': 6}),
+        }
 
 class ActeurForm(forms.ModelForm):
     class Meta:

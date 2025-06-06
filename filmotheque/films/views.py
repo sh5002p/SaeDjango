@@ -1,8 +1,7 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Film, Acteur, Categorie
-from .forms import FilmForm, ActeurForm, CategorieForm
-
+from .models import Film, Acteur, Categorie, Commentaire
+from .forms import FilmForm, ActeurForm, CategorieForm, CommentaireForm
 # === Films ===
 class ListeFilms(ListView):
     model = Film
@@ -18,6 +17,18 @@ class AjoutFilm(CreateView):
     model = Film
     form_class = FilmForm
     template_name = "films/formulaire_film.html"
+    success_url = reverse_lazy("liste_films")
+
+
+class ModifierFilm(UpdateView):
+    model = Film
+    form_class = FilmForm
+    template_name = "films/formulaire_film.html"
+    success_url = reverse_lazy("liste_films")
+
+class SupprimerFilm(DeleteView):
+    model = Film
+    template_name = "films/film_confirm_delete.html"
     success_url = reverse_lazy("liste_films")
 
 # === Acteurs ===
@@ -53,3 +64,15 @@ class AjoutCategorie(CreateView):
     form_class = CategorieForm
     template_name = "films/formulaire_categorie.html"
     success_url = reverse_lazy("liste_categories")
+class AjoutCommentaire(CreateView):
+    model = Commentaire
+    form_class = CommentaireForm
+    template_name = "films/formulaire_commentaire.html"
+
+    def form_valid(self, form):
+        film_id = self.kwargs['film_id']
+        form.instance.film_id = film_id
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('detail_film', kwargs={'pk': self.kwargs['film_id']})

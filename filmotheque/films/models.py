@@ -18,14 +18,16 @@ class Acteur(models.Model):
 
 class Film(models.Model):
     titre = models.CharField(max_length=200)
-    annee_sortie = models.PositiveIntegerField()
-    realisateur = models.CharField(max_length=100)
-    categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True)
-    acteurs = models.ManyToManyField(Acteur, through='Role')
+    realisateur = models.CharField(max_length=100, blank=True)
+    acteurs = models.ManyToManyField('Acteur', blank=True)
+    annee_sortie = models.DateField(verbose_name="Date de sortie")
+    synopsis = models.TextField(blank=True)
     affiche = models.ImageField(upload_to='affiches/', blank=True, null=True)
+    categorie = models.ForeignKey('Categorie', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.titre
+
 
     def moyenne_notes(self):
         notes = self.commentaires.all()
@@ -38,13 +40,6 @@ class Film(models.Model):
 
     def pire_commentaire(self):
         return self.commentaires.order_by('note').first()
-
-class Role(models.Model):
-    film = models.ForeignKey(Film, on_delete=models.CASCADE)
-    acteur = models.ForeignKey(Acteur, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.acteur} dans {self.film}"
 
 class Commentaire(models.Model):
     film = models.ForeignKey(Film, related_name='commentaires', on_delete=models.CASCADE)

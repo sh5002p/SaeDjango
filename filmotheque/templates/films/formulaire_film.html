@@ -1,12 +1,29 @@
 {% extends 'base.html' %}
-{% block titre %}{{ form.instance.pk|yesno:"Modifier un film,Ajouter un film" }}{% endblock %}
+
+{% block titre %}
+  {{ form.instance.pk|yesno:"Modifier un film,Ajouter un film" }}
+{% endblock %}
+
 {% block content %}
 <h2>{{ form.instance.pk|yesno:"Modifier le film,Ajouter un nouveau film" }}</h2>
+
 <div class="form-container">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn">{{ form.instance.pk|yesno:"Mettre à jour,Créer le film" }}</button>
+
+        {# Affiche chaque champ individuellement si tu veux plus de contrôle : #}
+        {{ form.non_field_errors }}
+        <p>{{ form.titre.label_tag }} {{ form.titre }}</p>
+        <p>{{ form.realisateur.label_tag }} {{ form.realisateur }}</p>
+        <p>{{ form.acteurs.label_tag }} {{ form.acteurs }}</p>
+        <p>{{ form.annee_sortie.label_tag }} {{ form.annee_sortie }}</p>
+        <p>{{ form.synopsis.label_tag }} {{ form.synopsis }}</p>
+        <p>{{ form.affiche.label_tag }} {{ form.affiche }}</p>
+        <p>{{ form.categorie.label_tag }} {{ form.categorie }}</p>
+
+        <button type="submit" class="btn">
+            {{ form.instance.pk|yesno:"Mettre à jour,Créer le film" }}
+        </button>
     </form>
 </div>
 {% endblock %}
