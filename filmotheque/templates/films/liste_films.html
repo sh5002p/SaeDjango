@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block titre %}Liste des films{% endblock %}
 {% block content %}
 <h2>Films enregistrés</h2>
 <a href="{% url 'ajout_film' %}" class="btn">➕ Ajouter un film</a>
 {% for film in films %}
 <div class="film-card">
-    <img src="{{ film.affiche.url }}" alt="Affiche de {{ film.titre }}">
+    {% if film.affiche %}
+        <img src="{{ film.affiche.url }}" alt="Affiche de {{ film.titre }}">
+    {% else %}
+        <img src="{% static 'images/default-poster.png' %}" alt="Aucune affiche disponible">
+    {% endif %}
     <div class="film-info">
         <h3><a href="{% url 'detail_film' film.pk %}">{{ film.titre }}</a></h3>
         <p>Réalisateur : {{ film.realisateur }}</p>
