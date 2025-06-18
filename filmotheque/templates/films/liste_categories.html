@@ -3,11 +3,15 @@
 {% block content %}
 <h2>Catégories enregistrées</h2>
 <a href="{% url 'ajout_categorie' %}" class="btn">➕ Ajouter une catégorie</a>
+
+
 <div class="categorie-grid">
     {% for categorie in categories %}
     <div class="categorie-card">
         <a href="{% url 'detail_categorie' categorie.pk %}" class="categorie-nom">{{ categorie.nom }}</a>
         <div class="categorie-description">{{ categorie.description }}</div>
+        <a href="{% url 'modif_categorie' categorie.pk %}" class="btn btn-edit">✏️ Modifier</a>
+        <a href="{% url 'suppr_categorie' categorie.pk %}" class="btn btn-delete" onclick="return confirm('Supprimer cette catégorie ?')">🗑️ Supprimer</a>
     </div>
     {% empty %}
     <p>Aucune catégorie enregistrée.</p>

@@ -19,6 +19,14 @@ urlpatterns = [
     path('acteurs/', views.ListeActeurs.as_view(), name='liste_acteurs'),
     path('acteurs/ajouter/', views.AjoutActeur.as_view(), name='ajout_acteur'),
     path('acteurs/<int:pk>/', views.DetailActeur.as_view(), name='detail_acteur'),
+    # Acteurs - Modifier / Supprimer
+    path('acteurs/<int:pk>/modifier/', views.ModifierActeur.as_view(), name='modif_acteur'),
+    path('acteurs/<int:pk>/supprimer/', views.SupprimerActeur.as_view(), name='suppr_acteur'),
+
+    # Catégories - Modifier / Supprimer
+    path('categories/<int:pk>/modifier/', views.ModifierCategorie.as_view(), name='modif_categorie'),
+    path('categories/<int:pk>/supprimer/', views.SupprimerCategorie.as_view(), name='suppr_categorie'),
+
 
     # Catégories
     path('categories/', views.ListeCategories.as_view(), name='liste_categories'),

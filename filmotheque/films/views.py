@@ -99,3 +99,26 @@ class AjoutUsager(CreateView):
     form_class = UsagerForm
     template_name = "films/formulaire_usager.html"
     success_url = reverse_lazy("liste_films")  # Redirection après enregistrement
+
+class ModifierActeur(UpdateView):
+    model = Acteur
+    form_class = ActeurForm
+    template_name = "films/formulaire_acteur.html"
+    success_url = reverse_lazy("liste_acteurs")
+
+class SupprimerActeur(DeleteView):
+    model = Acteur
+    template_name = "films/acteur_confirm_delete.html"
+    success_url = reverse_lazy("liste_acteurs")
+
+class ModifierCategorie(UpdateView):
+    model = Categorie
+    form_class = CategorieForm
+    template_name = "films/formulaire_categorie.html"
+    success_url = reverse_lazy("liste_categories")
+
+class SupprimerCategorie(DeleteView):
+    model = Categorie
+    template_name = "films/categorie_confirm_delete.html"
+    success_url = reverse_lazy("liste_categories")
+

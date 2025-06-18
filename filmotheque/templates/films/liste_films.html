@@ -4,6 +4,7 @@
 {% block content %}
 <h2>Films enregistrés</h2>
 <a href="{% url 'ajout_film' %}" class="btn">➕ Ajouter un film</a>
+
 {% for film in films %}
 <div class="film-card">
     {% if film.affiche %}
@@ -16,6 +17,8 @@
         <p>Réalisateur : {{ film.realisateur }}</p>
         <p>Année de sortie : {{ film.annee_sortie }}</p>
         <p>Catégorie : {{ film.categorie.nom }}</p>
+        <a href="{% url 'modif_film' film.pk %}" class="btn btn-edit">✏️ Modifier</a>
+        <a href="{% url 'suppr_film' film.pk %}" class="btn btn-delete" onclick="return confirm('Supprimer ce film ?')">🗑️ Supprimer</a>
     </div>
 </div>
 {% empty %}

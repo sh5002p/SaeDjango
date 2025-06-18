@@ -3,6 +3,8 @@
 {% block content %}
 <h2>Acteurs enregistrés</h2>
 <a href="{% url 'ajout_acteur' %}" class="btn">➕ Ajouter un acteur</a>
+
+
 <div class="acteur-grid">
     {% for acteur in acteurs %}
     <div class="acteur-card">
@@ -13,6 +15,8 @@
         {% endif %}
         <a href="{% url 'detail_acteur' acteur.pk %}" class="acteur-nom">{{ acteur.prenom }} {{ acteur.nom }}</a>
         <div class="acteur-age">{{ acteur.age }} ans</div>
+        <a href="{% url 'modif_acteur' acteur.pk %}" class="btn btn-edit">✏️ Modifier</a>
+        <a href="{% url 'suppr_acteur' acteur.pk %}" class="btn btn-delete" onclick="return confirm('Supprimer cet acteur ?')">🗑️ Supprimer</a>
     </div>
     {% empty %}
     <p>Aucun acteur enregistré.</p>

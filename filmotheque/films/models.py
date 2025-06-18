@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class Categorie(models.Model):
     nom = models.CharField(max_length=100)
@@ -55,8 +56,6 @@ class Commentaire(models.Model):
         return f"Commentaire ({self.note}/20) par {self.personne}"
 
 
-
-
 class Personne(AbstractUser):
     TYPES = [
         ('pro', 'Professionnel'),
@@ -73,6 +72,7 @@ class Personne(AbstractUser):
 
     def __str__(self):
         return self.pseudo
+
 
 
 class Usager(models.Model):
