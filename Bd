@@ -1,0 +1,58 @@
+Table Categorie {
+  id int [pk, increment]
+  nom varchar(100)
+  description text
+}
+
+Table Acteur {
+  id int [pk, increment]
+  prenom varchar(100)
+  nom varchar(100)
+  age int
+  photo varchar(255) [note: "Chemin de l'image"]
+}
+
+Table Film {
+  id int [pk, increment]
+  titre varchar(200)
+  realisateur varchar(100)
+  annee_sortie date
+  synopsis text
+  affiche varchar(255) [note: "Chemin de l'affiche"]
+  categorie_id int [ref: > Categorie.id]
+}
+
+Table Commentaire {
+  id int [pk, increment]
+  film_id int [ref: > Film.id]
+  personne_id int [ref: > Personne.id]
+  texte text
+  note int
+  date_creation datetime
+}
+
+Table Personne {
+  id int [pk, increment]
+  pseudo varchar(100) [unique]
+  nom varchar(100)
+  prenom varchar(100)
+  mail varchar(255) [unique]
+  type varchar(3) [note: "'pro' ou 'ama'"]
+  password varchar(128) [note: "hérité de AbstractUser"]
+}
+
+Table Usager {
+  id int [pk, increment]
+  pseudo varchar(50) [unique]
+  nom varchar(100)
+  prenom varchar(100)
+  mail varchar(255) [unique]
+  mot_de_passe varchar(100)
+  type varchar(10) [note: "'pro' ou 'amateur'"]
+}
+
+Table Film_Acteurs {
+  id int [pk, increment]
+  film_id int [ref: > Film.id]
+  acteur_id int [ref: > Acteur.id]
+}
